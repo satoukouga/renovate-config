@@ -13,8 +13,12 @@
   "reviewers": ["satoukouga"],
   "timezone": "Asia/Tokyo",
   "minimumReleaseAge": "24 hours",
+  "prHourlyLimit": 0,
   "prConcurrentLimit": 20,
-  "lockFileMaintenance": { "enabled": true },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 9am on monday"]
+  },
   "osvVulnerabilityAlerts": true,
   "customManagers": [
     {

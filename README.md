@@ -23,8 +23,8 @@ Settings in the repository are applied on top of the preset; lists such as `pack
 * Conventional Commits with the `deps` scope: `chore(deps): update ...`.
 * A review request to `satoukouga` on every pull request; nothing merges automatically.
 * No release younger than 24 hours, the same as pnpm's `minimumReleaseAge`.
-* At most 20 open pull requests per repository (security updates are not counted).
-* A weekly lockfile refresh, and OSV advisories as well as GitHub's.
+* No hourly limit, and at most 20 open pull requests per repository (security updates are not counted).
+* A lockfile refresh every Monday before 9am (Asia/Tokyo), and OSV advisories as well as GitHub's.
 * Versions annotated with `# renovate: datasource=<ds> depName=<name>` in workflows and actions.
 * pnpm in `package.json`'s `packageManager` and in `mise.toml` as one update.
 
