@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Shared Renovate rules for satoukouga's repositories: one pull request per update, each with a review request; nothing merges automatically.",
+    "Repositories add their base branch (baseBranchPatterns) and their own managers and package rules on top."
+  ],
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "reviewers": ["satoukouga"],
+  "timezone": "Asia/Tokyo",
+  "minimumReleaseAge": "24 hours",
+  "prConcurrentLimit": 20,
+  "lockFileMaintenance": { "enabled": true },
+  "osvVulnerabilityAlerts": true,
+  "customManagers": [
+    {
+      "description": "Versions annotated in a workflow or action: `# renovate: datasource=<ds> depName=<name>` (optionally `versioning=` and `extractVersion=`) on the line above a `key: <version>` entry. An image reference is read as its tag.",
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/(workflows|actions)/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "(?:#|//) renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?( extractVersion=(?<extractVersion>\\S+))?\\s*\\n\\s*(?:const )?[$\\w\"-]+\\s*[=:]\\s*\"?(?:[^\"\\s:]+:)?(?<currentValue>[^\"\\s]+)\"?"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "pnpm pinned twice, in package.json's packageManager and in mise.toml, moves as one update.",
+      "groupName": "pnpm",
+      "matchDepNames": ["pnpm", "npm:pnpm"]
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+# Validates the preset (default.json) and this repository's own config, so a broken preset fails
+# here before Renovate reads it in every repository that extends it.
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Renovate pushes its branches to this repository, so pull request runs see repository
+# secrets. The job gets a read-only token and uses no secrets.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      # renovate: datasource=npm depName=renovate
+      RENOVATE_VERSION: 44.260.0
+      # Dependency install scripts never run in CI. re2 has no native build without them, so
+      # the validator checks regexes with JavaScript RegExp (it warns about this).
+      NPM_CONFIG_IGNORE_SCRIPTS: "true"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Node.js and pnpm at the versions pinned in mise.toml.
+      - uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
+        with:
+          # renovate: datasource=github-releases depName=jdx/mise extractVersion=^v(?<version>.+)$
+          version: 2026.11.14
+          install_args: node npm:pnpm
+      # `--no-global` checks default.json as a preset (repository config), not as a self-hosted
+      # global config. With no file argument the validator finds renovate.json itself.
+      - name: Validate the preset
+        run: pnpm dlx --package "renovate@${RENOVATE_VERSION}" renovate-config-validator --strict --no-global default.json
+      - name: Validate this repository's config
+        run: pnpm dlx --package "renovate@${RENOVATE_VERSION}" renovate-config-validator --strict
