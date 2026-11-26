@@ -35,6 +35,12 @@
       "description": "pnpm pinned twice, in package.json's packageManager and in mise.toml, moves as one update.",
       "groupName": "pnpm",
       "matchDepNames": ["pnpm", "npm:pnpm"]
+    },
+    {
+      "description": "Images and OCI artifacts from registries other than Docker Hub (ghcr.io, mcr.microsoft.com, quay.io, ...) give Renovate no release time, so minimumReleaseAge would hold their updates forever; they get no minimum age.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["/^[^/]*[.:][^/]*\\//", "!/^(index\\.)?docker\\.io\\//"],
+      "minimumReleaseAge": null
     }
   ]
 }
