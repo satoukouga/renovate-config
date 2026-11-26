@@ -22,7 +22,7 @@ Settings in the repository are applied on top of the preset; lists such as `pack
 * `config:recommended`, the Dependency Dashboard, and GitHub Actions pinned to commit digests.
 * Conventional Commits with the `deps` scope: `chore(deps): update ...`.
 * A review request to `satoukouga` on every pull request; nothing merges automatically.
-* No release younger than 24 hours, the same as pnpm's `minimumReleaseAge`.
+* No release younger than 24 hours, the same as pnpm's and Bun's `minimumReleaseAge`. Images from registries other than Docker Hub are exempt: they report no release time, so the wait would never end.
 * No hourly limit, and at most 20 open pull requests per repository (security updates are not counted).
 * A lockfile refresh every Monday before 9am (Asia/Tokyo), and OSV advisories as well as GitHub's.
 * Versions annotated with `# renovate: datasource=<ds> depName=<name>` in workflows and actions.
